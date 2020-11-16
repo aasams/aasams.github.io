@@ -51,28 +51,13 @@ var Terminal = (function() {
             sel.addRange(range);
         }
     };
-
-    var autoCompleteInput = function(input) {
-        var cmds        = self.commands,
-            re          = new RegExp("^" + input, "ig"),
-            suggestions = [];
-        for(var cmd in cmds) {
-            if(cmds.hasOwnProperty(cmd) && cmd.match(re)) {
-                suggestions.push(cmd);
-            }
-        }
-        return suggestions;
-    };
-
     // Terminal functions
-
     self.init = function(elem, commands) {
         self.commands = commands;
     
         elem.addEventListener("keydown", function(event) {
             if(event.keyCode == KEY_TAB) {
                 var prompt = event.target;
-                var suggestions = autoCompleteInput(prompt.textContent.replace(/\s+/g, ""));
 
                 if(suggestions.length == 1) {
                     prompt.textContent = suggestions[0];

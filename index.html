@@ -30,36 +30,69 @@
     <script src="terminal.js"></script>
     <script>
     
-    
+      var password = "secret"
+      var rootCreated = false
       var commands = {};
-      
-      commands.help = function() {
-        var output = "<div>" +
+      var cmds = "<div>" +
                      "<ul>" +
-                     "<li><strong>help</strong> - display this help.</li>" +
-                     "<li><strong>hello NAME</strong> - displays a greeting for NAME.</li>" +
-                     "<li><strong>weather LOCATION</strong> - show weather for LOCATION</li>" +
+                     "<li><strong>ERROR</strong> - no command specified, try installctl help </li>" +
                      "</ul></div>";
-        return output;
+      var help = "<div>" +
+                     "<ul>" +
+                     "<li><strong>install -root=ROOT -password=Pass -override[Default=False]</strong> - install program to root </li>" +
+                     "<li><strong>remove</strong> - uninstall the program </li>" +
+                     "</ul></div>";
+
+      commands.installctl = function(args) {
+        args = parseArgs(args)
+        console.log(args)
+        if(args.length < 2) return cmds;
+        if (args[1] == "help") return help;
+        if (args[1] == "install") return handleInstall(args); 
+      };
+      commands.mk = function(args) {
+        args = parseArgs(args)
+        console.log(args)
+        if(args.length < 2) {return "<p>Hello. Why don't you tell me your name?</p>";}
+
+        return "Hello " + args[1];
+        // if(args.length < 2) return "<p> mkdir path </p>";
+        // if(args[1] == "/root/program") {
+        //   rootCreated = true
+        // }
+        // return "<p> Created it" + args[1] + "</p>"
       };
 
-      commands.hello = function(args) {
+      commands.create = function(args) {
+        if(args.length < 2) return "<p>Hello. Why don't you tell me your name?</p>";
+        return "Hello " + args[1];
+      };
+      commands.hi = function(args) {
+        console.log(args)
         if(args.length < 2) return "<p>Hello. Why don't you tell me your name?</p>";
         return "Hello " + args[1];
       };
 
-      commands.weather = function(args) {
-        args.shift();
-        var xhr = new XMLHttpRequest();
-        xhr.open("get", "http://api.openweathermap.org/data/2.5/weather?units=metric&q=" + args.join(" "), false);
-        xhr.send();
-        if(xhr.status !== 200) return "Error :(";
-        weather = JSON.parse(xhr.responseText);
-        return "<p><img style=\"vertical-align: middle\" src=\"http://openweathermap.org/img/w/" + 
-               weather.weather[0].icon + ".png\">" + 
-               weather.weather[0].description + ", " + 
-               weather.main.temp + " &deg;C</p>"
+      // Start at args[2] 
+      handleInstall = function(args) {
+        if (args.length < 3) return "<div>" +
+                              "<ul>" +
+                              "<li><strong> Usage: </strong>" + 
+                              "<li><strong>install -root=ROOT -password=Pass -override</strong> - install program" +
+                              "<li><strong>root [Required]</strong> - Program Root" +
+                              "<li><strong>password [Required] </strong> - System Password Required for install" +
+                              "<li><strong>override [Optional] </strong> - Re-install if prior install was aborted" +
+                              "</ul></div>";
+        
+        // for (var i=2; i<args.length; i++){
+
+        // }                    
       };
+
+      // iterate remove "" and return as an array.
+      parseArgs = function (args) {
+        return Array.from(args).filter(function(i) { return i != "";});
+      }
 
       Terminal.init(document.getElementById("terminal"), commands);
     </script>
