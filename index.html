@@ -19,82 +19,146 @@
     </style>
   </head>
   <body>
-    <h1>Terminal.js Demo</h1>
+    <h1>Welcome!</h1>
+    <h2><a href="prompt.html" target="_blank"> Question Prompt</a></h2>
     <div id="terminal">
-      <p>Type 'help' to get started.</p>
       <p class="hidden">
-        <span class="prompt">guest@terminal.js &sim; &gt; </span>
+        <span class="prompt">user@anduril &sim; &gt; </span>
         <span contenteditable="true" class="input"> </span>
       </p>
     </div>
     <script src="terminal.js"></script>
     <script>
-    
-      var password = "secret"
-      var rootCreated = false
+      // For terminal.js
       var commands = {};
+      // For installctl
+      var password = "secret"
+      var folders = new Set(["/root/program"])
+      var badInstalls = new Set(["/root/program"])
+
       var cmds = "<div>" +
-                     "<ul>" +
-                     "<li><strong>ERROR</strong> - no command specified, try installctl help </li>" +
-                     "</ul></div>";
+                  "<ul>" +
+                  "<li><strong>ERROR</strong> - no command specified, try installctl -help </li>" +
+                  "</ul></div>";
+
       var help = "<div>" +
-                     "<ul>" +
-                     "<li><strong>install -root=ROOT -password=Pass -override[Default=False]</strong> - install program to root </li>" +
-                     "<li><strong>remove</strong> - uninstall the program </li>" +
-                     "</ul></div>";
+                  "<ul>" +
+                  "<li><strong> installctl </strong> <p> installs the program to the supplied root </p> " + 
+                  "<li><strong> Usage: </strong>" + 
+                  "<strong>installctl -root=ROOT -password=Pass -override</strong>" +
+                  "<li><strong>root [Required]</strong> - Program Root" +
+                  "<li><strong>password [Required] </strong> - System Password Required for install" +
+                  "<li><strong>overwrite [Optional] </strong> - Over write existing install directory" +
+                  "</ul></div>";
 
       commands.installctl = function(args) {
         args = parseArgs(args)
         console.log(args)
         if(args.length < 2) return cmds;
-        if (args[1] == "help") return help;
-        if (args[1] == "install") return handleInstall(args); 
+        if (args[1] == "-help") return help;
+        return handleInstall(args); 
       };
-      commands.mk = function(args) {
+
+      commands.inspect = function(args) {
         args = parseArgs(args)
-        console.log(args)
-        if(args.length < 2) {return "<p>Hello. Why don't you tell me your name?</p>";}
-
-        return "Hello " + args[1];
-        // if(args.length < 2) return "<p> mkdir path </p>";
-        // if(args[1] == "/root/program") {
-        //   rootCreated = true
-        // }
-        // return "<p> Created it" + args[1] + "</p>"
+        console.log("args: " + args)
+        if(args.length < 2) return  "<li><strong> Usage: inspect PATH </strong> <p> Determines File Damage </p>";
+        if (!folders.has(args[1])) return "<p> Directory not found </p>"
+        if (badInstalls.has(args[1])) return "<p> Directory is Damaged </p>";
+        return "<p> Directory " + args[1] + " reports no damage </p>"
       };
 
-      commands.create = function(args) {
-        if(args.length < 2) return "<p>Hello. Why don't you tell me your name?</p>";
-        return "Hello " + args[1];
-      };
-      commands.hi = function(args) {
-        console.log(args)
-        if(args.length < 2) return "<p>Hello. Why don't you tell me your name?</p>";
-        return "Hello " + args[1];
+      commands.mkdir = function(args) {
+        args = parseArgs(args)
+        console.log("args: " + args)
+        if(args.length < 2) return  "<li><strong> Usage: mkdir PATH </strong> <p> Creates a Directory </p>";
+        rootCreated = args[1]
+        if (folders.has(args[1])) return "<p> Directory already Exists </p>";
+        folders.add(args[1])
+        console.log(folders)
+        return "<p> Created Directory " + args[1] + "</p>"
       };
 
-      // Start at args[2] 
+      commands.rmdir = function(args) {
+        args = parseArgs(args)
+        console.log("args: " + args)
+        if(args.length < 2) return  "<li><strong> Usage: rmdir PATH </strong>";
+        rootCreated = args[1]
+        if (!folders.has(args[1])) return "<p> Directory Does not Exist </p>";
+        folders.delete(args[1])
+        if (badInstalls.has(args[1])) badInstalls.delete(args[1])
+        return "<p> Deleted " + args[1] + "</p>"
+      };
+
+      // Start at args[1] 
       handleInstall = function(args) {
-        if (args.length < 3) return "<div>" +
-                              "<ul>" +
-                              "<li><strong> Usage: </strong>" + 
-                              "<li><strong>install -root=ROOT -password=Pass -override</strong> - install program" +
-                              "<li><strong>root [Required]</strong> - Program Root" +
-                              "<li><strong>password [Required] </strong> - System Password Required for install" +
-                              "<li><strong>override [Optional] </strong> - Re-install if prior install was aborted" +
-                              "</ul></div>";
-        
-        // for (var i=2; i<args.length; i++){
-
-        // }                    
+        m = argsToMap(args)
+        console.log(m)
+        if (!m.has("-root")) {
+          return "<p> ERROR 200: No Install Path Provided </p>";
+        }
+        if (!m.has("-password") || m.get("-password") != password) {
+          return "<p> ERROR 100: Authentication Incorrect </p>";
+        } 
+        if (!folders.has(m.get("-root"))) {
+          return "<p> Error 500: Root Directory Does not Exist </p>"
+        }
+        if (badInstalls.has(m.get("-root"))) {
+          if (!m.has("-overwrite")) {
+            return "<p> ERROR 300: Install file already exists </p>";
+          } else {
+            return "<p> ERROR 400: Root Directory Corrupt, try running `inspect` on the root </p>"
+          }
+        }
+        return "<p> Installed Successfully under " + m.get("-root") + "</p>"           
       };
 
-      // iterate remove "" and return as an array.
+      // Remove empty spaces from arguments and trim whitespace.
       parseArgs = function (args) {
-        return Array.from(args).filter(function(i) { return i != "";});
+        return Array.from(args).map(x=>x.trim()).filter( i => (i != "" && i != null && i != " "));
+      }
+      argsToMap = function(args) {
+        m = new Map()
+        for (var i = 0; i < args.length; i++) {
+          r = args[i].split("=")
+          if (r.length == 2) {
+            m.set(r[0], r[1])
+          }
+          if (r.length == 1) {
+           m.set(r[0], "")
+          }
+        }
+        return m
       }
 
       Terminal.init(document.getElementById("terminal"), commands);
     </script>
   </body>
 </html>
+
+<!-- 
+Prompt:
+
+Install program to the computer using the “installctl” tool.
+
+*Directions To Install Program*
+
+1. Create the installation root directory /root/program with mkdir
+2. Start installation using installctl tool:
+    1.  installctl install -root=/root/program -password=secret
+
+*Troubleshooting:*
+
+* Error 100:
+    * Password is Missing or Wrong
+* Error 200:
+    * Root Directory is not supplied
+* Error 300: 
+    * Installer found files already in the root directory. To fresh install Re-Run with the flag *-overwrite* 
+* Error 500:
+    * Root directory does not exist
+
+
+If error is not listed above or persists, collect the Error Code and message details to Tech Support.
+
+-->

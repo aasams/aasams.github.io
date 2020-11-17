@@ -1,8 +1,5 @@
-@import url(//fonts.googleapis.com/css?family=VT323);
-
 /**
 * Terminal container.
-* Important note: The "VT323" font face comes from Google web fonts.
 */
 #terminal {
     width:       100%; 
