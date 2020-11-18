@@ -1,6 +1,6 @@
 <div>
 <h2> Install the program to computer using the <b>installctl</b> tool. </h2>
-<p>  More can be found out about installctl by running <i> installctl -help </i> </p>
+<p>  More can be found out about <b>installctl</b> by running <i> installctl -help </i> </p>
 <h3> Directions To Install Program </h3>
 <ul>
 <li> Create the installation root directory <i>/root/program</i> with <b>mkdir</b>
@@ -10,15 +10,15 @@
     </ul>
 </ul>
 
-
 <h2> Troubleshooting: </h2>
 
 <ul> 
 <li> <b>Error 100: </b> Password is Missing or Wrong
-<li> <b>Error 200: </b>  Root Directory is not supplied
-<li> <b>Error 300: </b>  Installer found files already in the root directory. To fresh install Re-Run with the flag <i>overwrite</i>
-<li> <b>Error 400: </b>  Root directory is corrupted, verify using <b> inspect </b> on the root directory
-<li> <b>Error 500: </b>  Root directory does not exist
+<li> <b>Error 200: </b> Root Directory is not supplied
+<li> <b>Error 300: </b> Installer found files already in the root directory. Include the paramater <i>-overwrite</i> to <b>installctl</b>
+<li> <b>Error 400: </b> Root directory is corrupted, verify using <b> inspect </b> on the root directory
+<li> <b>Error 500: </b> Root directory does not exist
 </ul>
+
 If error is not listed above or persists, collect the Error Code and message details to Tech Support.
 </div>
