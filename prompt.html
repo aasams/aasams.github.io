@@ -3,18 +3,21 @@
 <p>  More can be found out about <b>installctl</b> by running <i> installctl -help </i> </p>
 <h3> Directions To Install Program </h3>
 <ul>
-<li> Create the installation root directory <i>/root/program</i> with <b>mkdir</b>
+<li>Navigate to the computer terminal</li>
+<li> Create the target installation root directory <i>/root/program</i> with <b>mkdir</b>
     <ul>
-        <li>type: <i>mkdir /root/program</i></li>
+        <li>enter: <i>mkdir /root/program</i></li>
     </ul>
-<li>  Start installation using <b>installctl</b> tool:
+<li>  Start installation using <b>installctl</b> tool: </li>
     <ul>
-        <li>installctl -root=/root/program -password=secret</li>
+        <li> Install program to the root directory </li>
+        <li> Provide the password "secret" </li>
+        <li>do this by entering: <i>installctl -root=/root/program -password=secret</i></li>
     </ul>
+<li> If errors occur reference the <b>Troubleshooting</b> section </li>
 </ul>
 
 <h2> Troubleshooting: </h2>
-
 <ul> 
 <li> <b>Error 100: </b> Password is Missing or Wrong
 <li> <b>Error 200: </b> Root Directory is not supplied
