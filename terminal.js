@@ -24,6 +24,10 @@ var Terminal = (function() {
         terminal.innerHTML += (self.commands[cmd](args));
     };
 
+    var runCommandNotFound = function(terminal, cmd, args) {
+        terminal.innerHTML += "<p>Command Not Found</p>";
+    };
+
     var updateHistory = function(cmd) {
         history.push(cmd);
         localStorage.setItem("history", history);
@@ -89,7 +93,9 @@ var Terminal = (function() {
             if(input[0] && input[0] in self.commands) {
                 runCommand(elem, input[0], input);
             }
-
+            if(input[0] && !(input[0] in self.commands)) {
+                runCommandNotFound(elem, input[0], input);
+            }
             resetPrompt(elem, prompt);
             event.preventDefault();
         });

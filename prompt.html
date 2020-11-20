@@ -4,27 +4,30 @@
 <h3> Directions To Install Program </h3>
 <ul>
 <li>Navigate to the computer terminal</li>
-<li> Create the target installation root directory <i>/root/program</i> with <b>mkdir</b>
+<li> Create the installation directory <i>/root/program</i> with <b>mkdir</b>
     <ul>
-        <li>enter: <i>mkdir /root/program</i></li>
+        <li>type: <i>mkdir /root/program</i> in the terminal </li>
     </ul>
-<li>  Start installation using <b>installctl</b> tool: </li>
+<li>  Start the installation using the <b>installctl</b> tool: </li>
     <ul>
-        <li> Install program to the root directory </li>
+        <li> Install program to the target directory <i>/root/program</i> </li>
         <li> Provide the password "secret" </li>
-        <li>do this by entering: <i>installctl -root=/root/program -password=secret</i></li>
+        <li> Do this by entering: <i>installctl -root=/root/program -password=secret</i> </li>
     </ul>
 <li> If errors occur reference the <b>Troubleshooting</b> section </li>
 </ul>
 
 <h2> Troubleshooting: </h2>
 <ul> 
-<li> <b>Error 100: </b> Password is Missing or Wrong
-<li> <b>Error 200: </b> Root Directory is not supplied
-<li> <b>Error 300: </b> Installer found files already in the root directory. Include the paramater <i>-overwrite</i> to <b>installctl</b>
-<li> <b>Error 400: </b> Root directory is corrupted, verify using <b> inspect </b> on the root directory
-<li> <b>Error 500: </b> Root directory does not exist
+<b>Common Installctl Errors</b>
+<li> <b>Error 100: </b> Password is Missing or Incorrect
+<li> <b>Error 200: </b> Target Directory is not supplied
+<li> <b>Error 300: </b> Installer found files already in the installation directory. Include the paramater <i>-overwrite</i> to <b>installctl</b> to attempt to overwrite
+<li> <b>Error 400: </b> Target directory is corrupted, verify using <b> inspect </b> on the directory
+<li> <b>Error 500: </b> Target installation directory does not exist, it needs to be created
 </ul>
 
 If error is not listed above or persists, collect the Error Code and message details to Tech Support.
+
+If you encounter "Command Not Found", make sure command exists and there are no extraneous spaces or typos.
 </div>

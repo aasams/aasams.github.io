@@ -19,8 +19,8 @@
     </style>
   </head>
   <body>
-    <h1>Welcome!</h1>
-    <h2><a href="prompt.html" target="_blank"> Question Prompt</a></h2>
+    <h1>Terminal</h1>
+    <h3>Do not refresh this page or progress will be lost! <a href="prompt.html" target="_blank"> Question Prompt</a> </h3>
     <div id="terminal">
       <p class="hidden">
         <span class="prompt">user@anduril &sim; &gt; </span>
@@ -43,12 +43,12 @@
 
       var help = "<div>" +
                   "<ul>" +
-                  "<li><strong> installctl </strong> <p> installs the program to the supplied root </p> " + 
+                  "<li><strong> installctl </strong> <p> installs the program to the supplied directory </p> " + 
                   "<li><strong> Usage: </strong>" + 
-                  "<strong>installctl -root=ROOT -password=Pass -override</strong>" +
-                  "<li><strong>root [Required]</strong> - Program Root" +
-                  "<li><strong>password [Required] </strong> - System Password Required for install" +
-                  "<li><strong>overwrite [Optional] </strong> - Over write existing install directory" +
+                  "<strong>installctl -root=Directory -password=Password </strong>" +
+                  "<li><strong>root [Required]</strong> - Directory to install program" +
+                  "<li><strong>password [Required] </strong> - System Password required for install" +
+                  "<li><strong>overwrite [Optional] </strong> - Overwrite existing install directory" +
                   "</ul></div>";
 
       commands.installctl = function(args) {
@@ -64,7 +64,7 @@
         console.log("args: " + args)
         if(args.length < 2) return  "<li><strong> Usage: inspect PATH </strong> <p> Determines File Damage </p>";
         if (!folders.has(args[1])) return "<p> Directory not found </p>"
-        if (badInstalls.has(args[1])) return "<p> Directory is Damaged </p>";
+        if (badInstalls.has(args[1])) return "<p> Directory is Damaged Beyond Repair </p>";
         return "<p> Directory " + args[1] + " reports no damage </p>"
       };
 
@@ -82,7 +82,7 @@
       commands.rmdir = function(args) {
         args = parseArgs(args)
         console.log("args: " + args)
-        if(args.length < 2) return  "<li><strong> Usage: rmdir PATH </strong>";
+        if(args.length < 2) return  "<li><strong> Usage: rmdir PATH </strong> <p> Removes a Directory </p>";
         rootCreated = args[1]
         if (!folders.has(args[1])) return "<p> Directory Does not Exist </p>";
         folders.delete(args[1])
@@ -101,13 +101,13 @@
           return "<p> ERROR 100: Authentication Incorrect </p>";
         } 
         if (!folders.has(m.get("-root"))) {
-          return "<p> Error 500: Root Directory Does not Exist </p>"
+          return "<p> Error 500: Install Directory Does not Exist </p>"
         }
         if (badInstalls.has(m.get("-root"))) {
           if (!m.has("-overwrite")) {
-            return "<p> ERROR 300: Install file already exists </p>";
+            return "<p> ERROR 300: Install files already exist </p>";
           } else {
-            return "<p> ERROR 400: Root Directory Corrupt, try running `inspect` on the root </p>"
+            return "<p> ERROR 400: Install Directory Corrupt, try running `inspect` on the directory </p>"
           }
         }
         return "<p> Installed Successfully under " + m.get("-root") + "</p>"           
@@ -135,30 +135,3 @@
     </script>
   </body>
 </html>
-
-<!-- 
-Prompt:
-
-Install program to the computer using the “installctl” tool.
-
-*Directions To Install Program*
-
-1. Create the installation root directory /root/program with mkdir
-2. Start installation using installctl tool:
-    1.  installctl install -root=/root/program -password=secret
-
-*Troubleshooting:*
-
-* Error 100:
-    * Password is Missing or Wrong
-* Error 200:
-    * Root Directory is not supplied
-* Error 300: 
-    * Installer found files already in the root directory. To fresh install Re-Run with the flag *-overwrite* 
-* Error 500:
-    * Root directory does not exist
-
-
-If error is not listed above or persists, collect the Error Code and message details to Tech Support.
-
--->
