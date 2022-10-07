@@ -8,15 +8,15 @@
 <h3> Directions To Install Program </h3>
 <ul>
 <li>Navigate to the computer terminal</li>
-<li> Create the installation directory <i>/root/program</i> with <b>mkdir</b>
+<li> Create the installation directory <b>/root/program</b> with <b>mkdir</b>
     <ul>
-        <li>type: <i>mkdir /root/program</i> in the terminal </li>
+        <li>type: <span class="highlight">mkdir /root/program</span> in the terminal </li>
     </ul>
 <li>  Start the installation using the <b>installctl</b> tool: </li>
     <ul>
-        <li> Install program to the target directory <i>/root/program</i> </li>
-        <li> Provide the password "secret" </li>
-        <li> Do this by entering: <i>installctl -root=/root/program -password=secret</i> </li>
+        <li> Install program to the target directory <b>/root/program</b> </li>
+        <li> Provide the password <b> secret </b> </li>
+        <li> Do this by entering: <span class="highlight">installctl -root=/root/program -password=secret</span> </li>
     </ul>
 <li> If errors occur reference the <b>Troubleshooting</b> section </li>
 </ul>
@@ -26,7 +26,7 @@
 <b>Common Installctl Errors</b>
 <li> <b>Error 100: </b> Password is Missing or Incorrect
 <li> <b>Error 200: </b> Target Directory is not supplied
-<li> <b>Error 300: </b> Installer found files already in the installation directory. Include the paramater <i>-overwrite</i> to <b>installctl</b> to attempt to overwrite
+<li> <b>Error 300: </b> Installer found files already in the installation directory. Include the paramater <span class="highlight"> -overwrite </span> to <b>installctl</b> to attempt to overwrite
 <li> <b>Error 400: </b> Target directory is corrupted, verify using <b> inspect </b> on the directory
 <li> <b>Error 500: </b> Target installation directory does not exist, it needs to be created
 </ul>
